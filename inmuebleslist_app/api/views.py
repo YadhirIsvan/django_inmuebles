@@ -21,6 +21,42 @@ class EmpresaAV(APIView):
         else:
             return Response(desearilizer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class EmpresaAVdetalle(APIView):
+    def get(self, request, pk):
+        try:
+            empresa = Empresa.objects.get(pk = pk)            
+        except Empresa.DoesNotExist:
+            return Response({'no se encuntra el inmueble que buscaste'}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = EmpresasAV(empresa, context={'request': request})
+        return Response(serializer.data)
+
+    def put(self, request, pk):
+
+        try:
+            empresa = Empresa.objects.get(pk = pk)            
+        except Empresa.DoesNotExist:
+            return Response({'el inmueble a actulizar no exite'}, status=status.HTTP_404_NOT_FOUND)
+
+        de_serializer = EmpresasAV(empresa, data=request.data, context={'request': request})
+        if de_serializer.is_valid():
+            de_serializer.save()
+            return Response(de_serializer.data)
+        else:
+            return Response(de_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk):
+        try:
+            empresa = Empresa.objects.get(pk = pk)
+        except Empresa.DoesNotExist:
+            return Response({'el inmueble a eliminar no exite'}, status=status.HTTP_404_NOT_FOUND)
+
+        empresa.delete()
+        return Response({'elemento eliminado'}, status=status.HTTP_204_NO_CONTENT)
+
+    
+
+    
 
 class EdificacionListAV(APIView):
 
