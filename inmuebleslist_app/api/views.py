@@ -1,10 +1,31 @@
 from rest_framework.response import Response
-from inmuebleslist_app.models import Edificacion, Empresa
-from inmuebleslist_app.api.serializer import EdificacionSerializer, EmpresasAV
+from inmuebleslist_app.models import Edificacion, Empresa, Comentario
+from inmuebleslist_app.api.serializer import EdificacionSerializer, EmpresasAV, ComentarioSerializer
 from rest_framework.decorators import api_view
 from rest_framework import  status
 from rest_framework.views import APIView
+from rest_framework import generics, mixins
 
+class ComentarioList(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
+    queryset = Comentario.objects.all()
+    serializer_class = ComentarioSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+    
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+
+
+class ComentarioDetail(mixins.RetrieveModelMixin, generics.GenericAPIView):
+    queryset = Comentario.objects.all()
+    serializer_class = ComentarioSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
+
+    
 
 class EmpresaAV(APIView):
     def get(self, request):
