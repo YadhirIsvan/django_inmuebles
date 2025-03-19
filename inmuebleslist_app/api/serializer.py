@@ -17,9 +17,9 @@ class EdificacionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Edificacion
-        # fields = "__all__"
+        fields = "__all__"
         # fields = ['id', 'pais', 'activate', 'imagen']
-        exclude = ['id']
+        #exclude = ['id']
 
 # class EmpresasAV(serializers.ModelSerializer):
 
@@ -38,18 +38,25 @@ class EdificacionSerializer(serializers.ModelSerializer):
 #         # exclude = ['id']
     
 
-class EmpresasAV(serializers.HyperlinkedModelSerializer):
 
-    # edificacionlist = EdificacionSerializer(many = True, read_only = True)
+
+
+
+
+class EmpresasAV(serializers.ModelSerializer):
+# serializers.HyperlinkedModelSerializer
+    edificacionlist = EdificacionSerializer(many = True, read_only = True)
     # edificacionserializer = serializers.StringRelatedField(many = True)
-    url = serializers.HyperlinkedIdentityField(view_name="empresa-detalle")  #  Asegura que DRF pueda generar la URL de Empresa
 
 
-    edificacionlist = serializers.HyperlinkedRelatedField(
-        many = True,
-        read_only = True, 
-        view_name= 'detalles'
-    )
+    # url = serializers.HyperlinkedIdentityField(view_name="empresa-detalle")  #  Asegura que DRF pueda generar la URL de Empresa
+
+
+    # edificacionlist = serializers.HyperlinkedRelatedField(
+    #     many = True,
+    #     read_only = True, 
+    #     view_name= 'detalles'
+    # )
 
     class Meta:
         model = Empresa

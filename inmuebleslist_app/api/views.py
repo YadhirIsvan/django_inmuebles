@@ -5,6 +5,8 @@ from rest_framework.decorators import api_view
 from rest_framework import  status
 from rest_framework.views import APIView
 from rest_framework import generics, mixins
+from rest_framework import viewsets
+from django.shortcuts import get_object_or_404
 
 class ComentarioCreate(generics.CreateAPIView):
     serializer_class = ComentarioSerializer
@@ -44,7 +46,52 @@ class ComentarioDetail(generics.RetrieveUpdateDestroyAPIView):
 #     def get(self, request, *args, **kwargs):
 #         return self.retrieve(request, *args, **kwargs)
 
-    
+class EmpresaVS(viewsets.ModelViewSet):
+    queryset = Empresa.objects.all()
+    serializer_class = EmpresasAV
+
+# class EmpresaVS(viewsets.ViewSet):
+#     def list(request, self):
+#         queryset = Empresa.objects.all()
+#         serializer = EmpresasAV(queryset, many = True)
+#         return Response(serializer.data)
+
+#     def retrive(request, self , pk=None):
+#         queryset = Empresa.objects.all()
+#         edificacion = get_object_or_404(queryset, pk = pk)
+#         serializer = EmpresasAV(edificacion)
+#         return  Response(serializer.data)
+
+#     def create(self, request):
+#         serializer = EmpresasAV(data = request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data)
+#         else:
+#             Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+#     def update(self, request, pk):
+#         try:
+#             empresa = Empresa.objects.get(pk=pk)
+#         except Empresa.DoesNotExist:
+#             return Response({'error' : 'Empresa no encontrada'}, status=status.HTTP_404_NOT_FOUND)
+        
+#         serializer = EmpresasAV(empresa, data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data)
+#         else:
+#             Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+#     def destroy(self, request, pk):
+#         try:
+#             empresa  = Empresa.objects.get(pk=pk)            
+#         except Empresa.DoesNotExist:
+#             return Response({'error': 'Empresa no encontrada'}, status=status.HTTP_404_NOT_FOUND)
+
+#         empresa.delete()
+#         return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 class EmpresaAV(APIView):
     def get(self, request):
