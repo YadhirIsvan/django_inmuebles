@@ -7,14 +7,23 @@ from rest_framework.views import APIView
 from rest_framework import generics, mixins
 from rest_framework import viewsets
 from django.shortcuts import get_object_or_404
+from rest_framework.permissions import IsAuthenticated
+from inmuebleslist_app.api.permissions import AdminOrReadOnly, ComentarioUserOrReadOnly
+
 
 class ComentarioCreate(generics.CreateAPIView):
     serializer_class = ComentarioSerializer
+    permission_classes = [IsAuthenticated]  # Asegúrate de que el usuario esté autenticado
+
 
     def perform_create(self, serializer):
         pk = self.kwargs.get('pk')
+        print(f"PK recibido: {pk}")  # Asegúrate de que el PK se esté pasando correctamente
         inmueble = Edificacion.objects.get(pk=pk)
-        serializer.save(Edificacion=inmueble)
+        user = self.request.user
+        print(f"Usuario logueado: {user}")  # V
+
+        serializer.save( edificacion=inmueble, user=user)
 
 class ComentarioList(generics.ListCreateAPIView):
     serializer_class =  ComentarioSerializer
@@ -25,6 +34,7 @@ class ComentarioList(generics.ListCreateAPIView):
 class ComentarioDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Comentario.objects.all()
     serializer_class = ComentarioSerializer
+    permission_classes = [ComentarioUserOrReadOnly]
 
 
 # class ComentarioList(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
@@ -47,6 +57,7 @@ class ComentarioDetail(generics.RetrieveUpdateDestroyAPIView):
 #         return self.retrieve(request, *args, **kwargs)
 
 class EmpresaVS(viewsets.ModelViewSet):
+    permission_classes = [AdminOrReadOnly]
     queryset = Empresa.objects.all()
     serializer_class = EmpresasAV
 
