@@ -23,6 +23,15 @@ class ComentarioCreate(generics.CreateAPIView):
         user = self.request.user
         print(f"Usuario logueado: {user}")  # V
 
+
+        if inmueble.number_calificacion == 0:
+            inmueble.avg_calificacion = serializer.validated_data['calificacion']
+        else: 
+            inmueble.avg_calificacion = (serializer.validated_data['calificacion'] + inmueble.avg_calificacion)/2
+
+
+        inmueble.number_calificacion = inmueble.number_calificacion + 1
+        inmueble.save()
         serializer.save( edificacion=inmueble, user=user)
 
 class ComentarioList(generics.ListCreateAPIView):
