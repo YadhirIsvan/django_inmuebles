@@ -6,3 +6,4 @@ urlpatterns = [
     path('list/', inmueble_list, name='listaInmuebles'),
     path('<int:pk>', inmueble_detalle, name='detalles')
 ]
+ 
