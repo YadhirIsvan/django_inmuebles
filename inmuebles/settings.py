@@ -40,6 +40,9 @@ INSTALLED_APPS = [
     'inmuebleslist_app',
     'rest_framework',
     'rest_framework.authtoken',
+    'rest_framework_simplejwt.token_blacklist',
+    'user_app',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -137,6 +140,28 @@ REST_FRAMEWORK = {
     #     'rest_framework.authentication.BasicAuthentication'
     # ]
    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication'
-    ]
+        # 'rest_framework.authentication.TokenAuthentication'
+        'rest_framework_simplejwt.authentication.JWTAuthentication'
+
+    ],
+
+    #se comenta esta seccion de abajo para que funcionen los throttle scope
+    #  'DEFAULT_THROTTLE_CLASSES':[
+    #      'rest_framework.throttling.AnonRateThrottle', 
+    #      'rest_framework.throttling.UserRateThrottle',
+    #  ],
+    'DEFAULT_THROTTLE_RATES':{
+        'anon': '100/day',
+        'user': '100/day',
+        'comentario-create' : '200/day',
+        'comentario-list': '800/day',
+        'comentario-detail': '300/day',
+    }
+
+}
+
+
+SIMPLE_JWT={
+    'ROTATE_REFRESH_TOKENS':True 
+
 }
