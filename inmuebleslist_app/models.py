@@ -19,7 +19,7 @@ class Edificacion(models.Model):
     activate =models.BooleanField(default=True)
     avg_calificacion = models.FloatField(default=0)
     number_calificacion = models.IntegerField(default=0)
-    empresa  = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name="edificacionlist")
+    empresa  = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name="empresa_nombre")
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

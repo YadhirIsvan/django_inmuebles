@@ -12,6 +12,7 @@ from inmuebleslist_app.api.permissions import IsAdminOrReadOnly, IsComentarioUse
 from rest_framework.throttling import UserRateThrottle, AnonRateThrottle, ScopedRateThrottle
 from inmuebleslist_app.api.throttling import ComentarioCreateThrottle, ComentarioListThrottle
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
 
 class UsuarioComentario(generics.ListAPIView):
     serializer_class = ComentarioSerializer
@@ -185,7 +186,11 @@ class EmpresaAVdetalle(APIView):
         return Response({'elemento eliminado'}, status=status.HTTP_204_NO_CONTENT)
 
     
-
+class EdificacionList(generics.ListAPIView):
+    queryset = Edificacion.objects.all()
+    serializer_class = EdificacionSerializer
+    filter_backends = [filters.SearchFilter , filters.OrderingFilter]
+    search_fields = ['direccion', 'empresa__nombre']
     
 
 class EdificacionListAV(APIView):

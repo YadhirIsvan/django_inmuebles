@@ -16,6 +16,7 @@ class ComentarioSerializer(serializers.ModelSerializer):
 
 class EdificacionSerializer(serializers.ModelSerializer):
     comentarios = ComentarioSerializer(many = True, read_only = True)
+    empresass_nombre = serializers.CharField(source= 'empresa.nombre')
     # longitud_direccion = serializers.SerializerMethodField()
     # longitud_pais = serializers.SerializerMethodField()
 
