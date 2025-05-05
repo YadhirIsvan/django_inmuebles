@@ -75,14 +75,19 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'inmuebles.wsgi.application'
 
+AUTH_USER_MODEL = 'user_app.Account'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'USER' : 'postgres',
+        'NAME': 'postgres',
+        'PASSWORD' : 'postgres',
+        'HOST': 'localhost'
+        
     }
 }
 
@@ -157,6 +162,10 @@ REST_FRAMEWORK = {
         'comentario-list': '800/day',
         'comentario-detail': '300/day',
     },
+
+    'DEFAULT_RENDERER_CLASSES' : (
+        'rest_framework.renderers.JSONRenderer',
+    )
 
     # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     # 'PAGE_SIZE' : 2
